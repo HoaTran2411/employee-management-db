@@ -28,11 +28,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Optional<EmployeeEntity> get(long id) {
-        if (!employeeRepo.findById(id).isPresent()){
-            throw new NotFoundException("Employee not found for this id: " + id);
-        }
-        return employeeRepo.findById(id);
+    public EmployeeEntity get(long id) {
+        return employeeRepo.findById(id).get();
     }
 
     @Override
@@ -49,10 +46,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeEntity update(UpdateEmployeeReq employeeReq, long id) throws IOException {
 
         EmployeeEntity employeeUpdate;
-
-        if (employeeRepo.findById(id).isEmpty()) {
-            throw new NotFoundException("Employee not found for this id: " + id);
-        }
 
         if (employeeReq.getAvatarImg().getOriginalFilename() != "") {
             employeeUpdate = EmployeeEntity.builder().withId(id).withAvatar(employeeReq.getAvatarImg().getBytes())

@@ -45,8 +45,8 @@ public class EmployeeController {
     // tìm theo id
     @GetMapping("/employee/{id}")
     public String getById(Model model, @PathVariable int id) {
-        if (employeeService.get(id).isPresent()) {
-            EmployeeEntity employee = employeeService.get(id).get();
+        if (employeeService.get(id) != null) {
+            EmployeeEntity employee = employeeService.get(id);
             model.addAttribute("employee", employee);
             if (employee.getAvatar() != null) {
                 try {
@@ -62,7 +62,7 @@ public class EmployeeController {
     // xóa theo id
     @GetMapping("/delete/{id}")
     public String deleteById(@PathVariable int id, Model model) {
-        if (employeeService.get(id).isPresent()) {
+        if (employeeService.get(id) != null) {
             employeeService.deleteById(id);
             model.addAttribute("employees", employeeService.getAll());
         }
@@ -112,7 +112,7 @@ public class EmployeeController {
     // update employee theo id
     @GetMapping("/update/{id}")
     public String getFormUpdateById(Model model, @PathVariable int id) throws UnsupportedEncodingException {
-        EmployeeEntity employeeEntity = employeeService.get(id).get();
+        EmployeeEntity employeeEntity = employeeService.get(id);
         UpdateEmployeeReq employeeUpdate = UpdateEmployeeReq.builder().withEmail(employeeEntity.getEmail())
                 .withFirstName(employeeEntity.getFirstName()).withLastName(employeeEntity.getLastName())
                 .withPassportNumber(employeeEntity.getPassportNumber()).withAvatar(employeeEntity.getAvatar()).build();
